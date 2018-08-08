@@ -1,31 +1,52 @@
+const webpack = require('webpack');
 const path = require('path')
 
 module.exports = {
-    entry: './src/index.js',
-    output: {
-        path: path.resolve(__dirname,'dist'),
-        filename: 'bundle.js'
-    },
-    resolve: {
-        extensions: ['', '.js', '.jsx']
+  entry: './src/index.js',
+  module: {
+    rules: [
+      {
+        test: /\.(js|jsx)$/,
+        exclude: /node_modules/,
+        use: ['babel-loader']
       },
-      module: {
-        loaders: [
+      {
+        test: /\.(png|jpg|gif)$/,
+        use: [
           {
-            test: /\.jsx?$/,
-            loader: 'babel',
-            exclude: /node_modules/,
-            query: {
-              cacheDirectory: true,
-              presets: ['react', 'es2015']
-            }
+            loader: 'file-loader',
+            options: {}
           }
         ]
       },
+      {
+        test: /\.css$/,
+        use: [ 'style-loader', 'css-loader' ]
+      }
+    ]
+  },
+  resolve: {
+    extensions: ['*', '.js', '.jsx']
+  },
+  node: {
+    fs: 'empty',
+    net: 'empty',
+    tls: 'empty'
+  },
+  output: {
+    path: path.resolve(__dirname, '/public'),
+    filename: 'bundle.js'
+  },
+  plugins: [
+    new webpack.HotModuleReplacementPlugin()
+  ],
+  
+  devServer: {
+    contentBase: path.resolve(__dirname, './public'),
+    publicPath: '/',
+    host: 'localhost',
+    port: 8080,
+    open: true,
+  },
+};
 
-    devServer:{
-        port: 3000,
-        contentBase: './public',
-        inline: true
-    }
-}

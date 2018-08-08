@@ -4,8 +4,8 @@ import React from 'react'
 export default class App extends React.Component{
     render(){
         return(
-            <div>
-                Hello from reactaa
+            <div className="test-class">
+                Hello from react!!!
             </div>
             )
     }
